@@ -1,0 +1,14 @@
+{
+  "name": "cypresskurs",
+  "version": "1.0.0",
+  "description": "Cypress test",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Jovica Raicki",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^4.11.0"
+  }
+}
