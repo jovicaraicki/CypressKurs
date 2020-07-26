@@ -9,10 +9,43 @@ describe('Login module', () => {
         cy.get('.nav-link').contains('Login').click()
         cy.get('#email').should('be.visible')
         cy.get('#password').should('be.visible')
-        cy.get('[type=submit]').should('be.visible')
-                               .should('have.text', 'Submit')
+        cy.get('[type=submit]').should('have.text', 'Submit')
                                .should('have.class', 'btn')
                                .should('have.class', 'btn-custom')
+                               .should('be.visible')
+    })
+
+    it('GA-22 : Login - invalid data - username', () => {
+        cy.visit('/')
+        cy.get('.nav-link').contains('Login').click()
+        cy.get('#email').type(email)
+        cy.get('#password').type('Vivify1974')
+        cy.get('[type=submit]').click()
+        cy.get('.alert').should('have.text', 'Bad Credentials')
+                        .should('have.class', 'alert')
+                        .should('be.visible')
+    })
+
+    it('GA-25 : Login - invalid data - password', () => {
+        cy.visit('/')
+        cy.get('.nav-link').contains('Login').click()
+        cy.get('#email').type('jovica.raicki@gmail.com')
+        cy.get('#password').type(password)
+        cy.get('[type=submit]').click()
+        cy.get('.alert').should('have.text', 'Bad Credentials')
+                        .should('have.class', 'alert')
+                        .should('be.visible')
+    })
+
+    it('GA-26 : Login - invalid data - username and password', () => {
+        cy.visit('/')
+        cy.get('.nav-link').contains('Login').click()
+        cy.get('#email').type(email)
+        cy.get('#password').type(password)
+        cy.get('[type=submit]').click()
+        cy.get('.alert').should('have.text', 'Bad Credentials')
+                        .should('have.class', 'alert')
+                        .should('be.visible')
     })
 
     it('GA-28 : Login - valid data', () => {
@@ -23,27 +56,5 @@ describe('Login module', () => {
         cy.get('[type=submit]').click()
         cy.wait(1000)
         cy.get('.nav-link').contains('Logout').should('be.visible')
-    })
-
-    it('GA-22 : Login - invalid data - username', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Login').click()
-        cy.get('#email').type(email)
-        cy.get('#password').type('Vivify1974')
-        cy.get('[type=submit]').click()
-        cy.get('.alert').should('be.visible')
-                        .should('have.text', 'Bad Credentials')
-                        .should('have.class', 'alert')
-    })
-
-    it('GA-25 : Login - invalid data - password', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Login').click()
-        cy.get('#email').type('jovica.raicki@gmail.com')
-        cy.get('#password').type(password)
-        cy.get('[type=submit]').click()
-        cy.get('.alert').should('be.visible')
-                        .should('have.text', 'Bad Credentials')
-                        .should('have.class', 'alert')
     })
 })
