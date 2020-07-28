@@ -1,3 +1,4 @@
+import { EMAIL } from '../fixtures/constants';
 const faker = require('faker');
 
 let firstName = faker.name.firstName();
@@ -6,9 +7,17 @@ let email = faker.internet.email();
 let password = faker.internet.password();
 
 describe('Register module', () => {
-    it('GA-9 : Register page test', () => {
+
+    before(() => {
+        cy.visit('/')
+    })
+
+    beforeEach(() => {
         cy.visit('/')
         cy.get('.nav-link').contains('Register').click()
+    })
+
+    it('GA-9 : Register page test', () => {
         cy.get('.container > div > h1.title-style')
             .should('be.visible')
             .should('have.text', 'Register')
@@ -73,8 +82,6 @@ describe('Register module', () => {
     })
 
     it('First Name empty', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
         cy.get('form > div.form-group:nth-child(4) > input#password').type(password)
@@ -85,8 +92,6 @@ describe('Register module', () => {
     })
 
     it('Last Name empty', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
         cy.get('form > div.form-group:nth-child(4) > input#password').type(password)
@@ -97,8 +102,6 @@ describe('Register module', () => {
     })
 
     it('Email empty', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(4) > input#password').type(password)
@@ -109,8 +112,6 @@ describe('Register module', () => {
     })
 
     it('Password empty', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
@@ -121,8 +122,6 @@ describe('Register module', () => {
     })
 
     it('Password Confirmation empty', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
@@ -133,8 +132,6 @@ describe('Register module', () => {
     })
 
     it('Password one letter', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
@@ -148,8 +145,6 @@ describe('Register module', () => {
     })
 
     it('Password and password confirmation one letter', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
@@ -163,8 +158,6 @@ describe('Register module', () => {
     })
 
     it('Password confirmation one letter', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
@@ -178,8 +171,6 @@ describe('Register module', () => {
     })
 
     it('Password format invalid', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
@@ -193,8 +184,6 @@ describe('Register module', () => {
     })
 
     it('Terms and conditions unchecked', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
@@ -207,8 +196,6 @@ describe('Register module', () => {
     })
 
     it('Email invalid format', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type('test@test')
@@ -221,9 +208,7 @@ describe('Register module', () => {
                         .should('have.class', 'alert')
     })
 
-    it('GA-84 : User can\'t register twice', () => {
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
+    it('GA-84 : User can\'t register twice #1', () => {
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
@@ -231,9 +216,9 @@ describe('Register module', () => {
         cy.get('form > div.form-group:nth-child(5) > input#password-confirmation').type(password)
         cy.get('form > div.form-group:nth-child(6) > input').click()
         cy.get('form > button').click()
+    })
 
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
+    it('GA-84 : User can\'t register twice #2', () => {
         cy.get('form > div.form-group:nth-child(1) > input#first-name').clear()
         cy.get('form > div.form-group:nth-child(2) > input#last-name').clear()
         cy.get('form > div.form-group:nth-child(3) > input#email').clear()
@@ -241,8 +226,9 @@ describe('Register module', () => {
         cy.get('form > div.form-group:nth-child(5) > input#password-confirmation').clear()
         cy.get('form > div.form-group:nth-child(6) > input').click()
 
-        cy.visit('/')
-        cy.get('.nav-link').contains('Register').click()
+    })
+
+    it('GA-84 : User can\'t register twice #3', () => {
         cy.get('form > div.form-group:nth-child(1) > input#first-name').type(firstName)
         cy.get('form > div.form-group:nth-child(2) > input#last-name').type(lastName)
         cy.get('form > div.form-group:nth-child(3) > input#email').type(email)
