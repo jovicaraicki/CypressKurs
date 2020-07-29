@@ -4,7 +4,8 @@
   "description": "Cypress test",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "test": "test",
+    "dev": "./node_modules/.bin/cypress open"
   },
   "author": "Jovica Raicki",
   "license": "ISC",

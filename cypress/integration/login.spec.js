@@ -37,64 +37,67 @@ describe('Login module', () => {
     })
 
     it('GA-22 : Login - invalid data - username', () => {
-        authPage.email.type('test')
-        authPage.password.type(EMAIL.PASSWORD)
-        authPage.loginButton.click()
-        authPage.email.then(($input) => {
-            expect($input[0].validationMessage).to.eq('Please include an \'@\' in the email address. \'test\' is missing an \'@\'.')
-        })
-        // authPage.alert.should('have.text', 'Bad Credentials')
-        //                 .should('have.class', 'alert')
-        //                 .should('be.visible')
-    })
-
-    it('GA-22 : Login - username - empty', () => {
-        authPage.email.type(' ')
-        authPage.password.type(EMAIL.PASSWORD)
-        authPage.loginButton.click()
-        authPage.email.then(($input) => {
-            expect($input[0].validationMessage).to.eq('Please fill out this field.')
-        })
-        // authPage.alert.should('have.text', 'Bad Credentials')
-        //                 .should('have.class', 'alert')
-        //                 .should('be.visible')
-    })
-
-    it('GA-22 : Login - username - no text after @', () => {
-        authPage.email.type('test@')
-        authPage.password.type(EMAIL.PASSWORD)
-        authPage.loginButton.click()
-        authPage.email.then(($input) => {
-            expect($input[0].validationMessage).to.eq('Please enter a part following \'@\'. \'test@\' is incomplete.')
-        })
-        // authPage.alert.should('have.text', 'Bad Credentials')
-        //                 .should('have.class', 'alert')
-        //                 .should('be.visible')
-    })
-
-    it.only('GA-22 : Login - username - no text before @', () => {
-        authPage.email.type('@test.com')
-        authPage.password.type(EMAIL.PASSWORD)
-        authPage.loginButton.click()
-        authPage.email.then(($input) => {
-            expect($input[0].validationMessage).to.eq('Please enter a part followed by \'@\'. \'@test.com\' is incomplete.')
-        })
-        // authPage.alert.should('have.text', 'Bad Credentials')
-        //                 .should('have.class', 'alert')
-        //                 .should('be.visible')
-    })
-
-    it('GA-25 : Login - invalid data - password', () => {
-        authPage.email.type(EMAIL.EXISTING)
-        authPage.password.type(password)
-        authPage.loginButton.click()
+        authPage.login(email, EMAIL.PASSWORD)
+        // authPage.email.type('test')
+        // authPage.password.type(EMAIL.PASSWORD)
+        // authPage.loginButton.click()
         authPage.alert.should('have.text', 'Bad Credentials')
                         .should('have.class', 'alert')
                         .should('be.visible')
     })
 
-    it.only('GA-26 : Login - invalid data - username and password', () => {
-        authPage.login(randomEmail(), EMAIL.PASSWORD)
+    it('GA-22 : Login - invalid data - username - no @', () => {
+        authPage.login('test', EMAIL.PASSWORD)
+        // authPage.email.type('test')
+        // authPage.password.type(EMAIL.PASSWORD)
+        // authPage.loginButton.click()
+        authPage.email.then(($input) => {
+            expect($input[0].validationMessage).to.eq('Please include an \'@\' in the email address. \'test\' is missing an \'@\'.')
+        })
+    })
+
+    it('GA-22 : Login - username - empty', () => {
+        authPage.login(null, EMAIL.PASSWORD)
+        // authPage.email.type(' ')
+        // authPage.password.type(EMAIL.PASSWORD)
+        // authPage.loginButton.click()
+        authPage.email.then(($input) => {
+            expect($input[0].validationMessage).to.eq('Please fill out this field.')
+        })
+    })
+
+    it('GA-22 : Login - username - no text after @', () => {
+        authPage.login('test@', EMAIL.PASSWORD)
+        // authPage.email.type('test@')
+        // authPage.password.type(EMAIL.PASSWORD)
+        // authPage.loginButton.click()
+        authPage.email.then(($input) => {
+            expect($input[0].validationMessage).to.eq('Please enter a part following \'@\'. \'test@\' is incomplete.')
+        })
+    })
+
+    it('GA-22 : Login - username - no text before @', () => {
+        authPage.login('@test.com', EMAIL.PASSWORD)
+        // authPage.email.type('@test.com')
+        // authPage.password.type(EMAIL.PASSWORD)
+        // authPage.loginButton.click()
+        authPage.email.then(($input) => {
+            expect($input[0].validationMessage).to.eq('Please enter a part followed by \'@\'. \'@test.com\' is incomplete.')
+        })
+    })
+
+    it('GA-25 : Login - invalid data - password', () => {
+        authPage.login(EMAIL.EXISTING, password)
+        // authPage.email.type(EMAIL.EXISTING)
+        // authPage.password.type(password)
+        // authPage.loginButton.click()
+        authPage.alert.should('have.text', 'Bad Credentials')
+                        .should('have.class', 'alert')
+                        .should('be.visible')
+    })
+
+    it('GA-26 : Login - invalid data - username and password', () => {
+        authPage.login(randomEmail(), password)
         // authPage.email.type(email)
         // authPage.password.type(password)
         // authPage.loginButton.click()
@@ -103,7 +106,7 @@ describe('Login module', () => {
                         .should('be.visible')
     })
 
-    it.only('GA-28 : Login - valid data', () => {
+    it('GA-28 : Login - valid data', () => {
         authPage.login(EMAIL.EXISTING, EMAIL.PASSWORD)
         cy.wait('@galleries')
         // authPage.email.type(EMAIL.EXISTING)
