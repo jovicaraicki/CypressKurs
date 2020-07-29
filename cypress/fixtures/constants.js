@@ -1,4 +1,8 @@
 export const EMAIL = {
-    EXISTING: 'zoomght@gmail.com',
-    PASSWORD: 'sifrica1'
+    EXISTING: 'jovica.raicki@gmail.com',
+    PASSWORD: 'Vivify1974'
+}
+
+export const GALLERY = {
+    NAME: 'Cypress gallery'
 }

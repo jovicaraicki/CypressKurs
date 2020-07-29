@@ -2,5 +2,7 @@
     "baseUrl": "https://gallery-app.vivifyideas.com/",
     "env": {
         "apiUrl": "https://gallery-api.vivifyideas.com/api"
-    }
+    },
+    "chromeWebSecurity": false,
+    "numTestsKeptInMemory": 0
 }
