@@ -36,6 +36,10 @@ export default class CreateGallery {
         return cy.get('[type=button] > i.fa-trash')
     }
 
+    get img() {
+        return cy.get('img')
+    }
+
     create(title, desc, url) {
         this.title.type(title)
         this.description.type(desc)

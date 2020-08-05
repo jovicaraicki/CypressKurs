@@ -20,15 +20,16 @@ describe('Routes', () => {
         cy.wait('@getLogo')
         cy.get('@getLogo').its('response').then((resp) => {
             // cy.log(resp.body.count)
-            cy.request({
-                method: 'DELETE',
-                url: Cypress.env('apiUrl') + '/galleries/' + resp.body.galleries[0].id,
-                form: true,
-                followRedirect: true,
-                headers: { 
-                    authorization: `Bearer ${window.localStorage.getItem('token')}`
-                }
-              })
+            // cy.request({
+            //     method: 'DELETE',
+            //     url: Cypress.env('apiUrl') + '/galleries/' + resp.body.galleries[0].id,
+            //     form: true,
+            //     followRedirect: true,
+            //     headers: { 
+            //         authorization: `Bearer ${window.localStorage.getItem('token')}`
+            //     }
+            //   })
+            cy.deleteBackend( resp.body.galleries[0].id)
         })
     })
 })

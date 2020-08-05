@@ -17,7 +17,7 @@ describe('Routes', () => {
         cy.wait('@galleries');
 
         createGallery.aNavLink.contains('Create Gallery').click();
-        for (let i = 1; i < 11; i++) {
+        for (let i = 1; i < 3; i++) {
           createGallery.aNavLink.contains('Create Gallery').click();
           createGallery.create(
             GALLERY.NAME + i,
@@ -36,16 +36,17 @@ describe('Routes', () => {
             // cy.log(resp.body.galleries[0].id)
             // cy.log(resp.body.galleries[1].id)
             // cy.log(resp.body.galleries[2].id)
-            for(let i = 0; i < 10; i++) {
-                cy.request({
-                    method: 'DELETE',
-                    url: Cypress.env('apiUrl') + '/galleries/' + resp.body.galleries[i].id,
-                    form: true,
-                    followRedirect: true,
-                    headers: { 
-                        authorization: `Bearer ${window.localStorage.getItem('token')}`
-                    }
-                  })
+            for(let i = 0; i < 2; i++) {
+                // cy.request({
+                //     method: 'DELETE',
+                //     url: Cypress.env('apiUrl') + '/galleries/' + resp.body.galleries[i].id,
+                //     form: true,
+                //     followRedirect: true,
+                //     headers: { 
+                //         authorization: `Bearer ${window.localStorage.getItem('token')}`
+                //     }
+                //   })
+                cy.deleteBackend(resp.body.galleries[i].id)
             }
         })
 
