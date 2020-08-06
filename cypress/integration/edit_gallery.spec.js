@@ -28,10 +28,21 @@ describe('Edit Gallery', () => {
         cy.wait('@my')
 
         cy.get('.box-title').eq(0).click()
-        cy.wait(1000)
-        cy.get('h1').contains(GALLERY.NAME).should('be.visible')
-        cy.get('a').contains('Jovica Raicki').should('be.visible')
-        cy.get('img').should('have.attr', 'src', 'https://www.cisl.cam.ac.uk/news/news-images/business-for-nature.jpg')
+        cy.get('@my').its('response').then((resp) => {
+            cy.request({
+                method: 'GET',
+                url: Cypress.env('apiUrl') + '/galleries/' + resp.body.galleries[0].id,
+                form: true,
+                followRedirect: true,
+                headers: { 
+                    authorization: `Bearer ${window.localStorage.getItem('token')}`
+                }
+              }).then((resp) => {
+                cy.get('h1').contains(GALLERY.NAME).should('be.visible')
+                cy.get('a').contains('Jovica Raicki').should('be.visible')
+                cy.get('img').should('have.attr', 'src', 'https://www.cisl.cam.ac.uk/news/news-images/business-for-nature.jpg')
+              })
+        })
 
     })
 
@@ -43,15 +54,38 @@ describe('Edit Gallery', () => {
         cy.wait('@my')
 
         cy.get('.box-title').eq(0).click()
-        cy.wait(1000)
+        cy.get('@my').its('response').then((resp) => {
+            let id = resp.body.galleries[0].id
+            cy.request({
+                method: 'GET',
+                url: Cypress.env('apiUrl') + '/galleries/' + id,
+                form: true,
+                followRedirect: true,
+                headers: { 
+                    authorization: `Bearer ${window.localStorage.getItem('token')}`
+                }
+              }).then((resp) => {
+
+                createGallery.typeButton.click()
+                cy.request({
+                    method: 'GET',
+                    url: Cypress.env('apiUrl') + '/galleries/' + id + '/edit',
+                    form: true,
+                    followRedirect: true,
+                    headers: { 
+                        authorization: `Bearer ${window.localStorage.getItem('token')}`
+                    }
+                  }).then((resp) => {
+                    cy.get('[type=button]').contains('Add image').click()
         
-        createGallery.typeButton.click()
-        cy.wait(1000)
-        cy.get('[type=button]').contains('Add image').click()
+                    createGallery.typeUrl.eq(1).type('https://www.laketemperature.org/wp-content/uploads/2019/11/Crater-Lake.jpg')
+            
+                    createGallery.typeSubmit.eq(0).click()
+                  })
 
-        createGallery.typeUrl.eq(1).type('https://www.laketemperature.org/wp-content/uploads/2019/11/Crater-Lake.jpg')
-
-        createGallery.typeSubmit.eq(0).click()
+              })
+        })
+        
     })
 
     it('change positions of image urls', () => {
@@ -62,15 +96,36 @@ describe('Edit Gallery', () => {
         cy.wait('@my')
 
         cy.get('.box-title').eq(0).click()
-        cy.wait(1000)
+        cy.get('@my').its('response').then((resp) => {
+            let id = resp.body.galleries[0].id
+            cy.request({
+                method: 'GET',
+                url: Cypress.env('apiUrl') + '/galleries/' + resp.body.galleries[0].id,
+                form: true,
+                followRedirect: true,
+                headers: { 
+                    authorization: `Bearer ${window.localStorage.getItem('token')}`
+                }
+              }).then((resp) => {
+
+                createGallery.typeButton.click()
+                cy.request({
+                    method: 'GET',
+                    url: Cypress.env('apiUrl') + '/galleries/' + id + '/edit',
+                    form: true,
+                    followRedirect: true,
+                    headers: { 
+                        authorization: `Bearer ${window.localStorage.getItem('token')}`
+                    }
+                  }).then((resp) => {
+                    cy.get('.fa-chevron-circle-up').eq(1).click()
+
+                    cy.get('.fa-chevron-circle-down').eq(0).click()
+                  })
         
-        createGallery.typeButton.click()
-        cy.wait(1000)
-
-        cy.get('.fa-chevron-circle-up').eq(1).click()
-
-        cy.wait(1000)
-        cy.get('.fa-chevron-circle-down').eq(0).click()
+              })
+        })
+        
     })
 
     it('check carousel', () => {
@@ -81,14 +136,25 @@ describe('Edit Gallery', () => {
         cy.wait('@my')
 
         cy.get('.box-title').eq(0).click()
+        cy.get('@my').its('response').then((resp) => {
+            cy.request({
+                method: 'GET',
+                url: Cypress.env('apiUrl') + '/galleries/' + resp.body.galleries[0].id,
+                form: true,
+                followRedirect: true,
+                headers: { 
+                    authorization: `Bearer ${window.localStorage.getItem('token')}`
+                }
+              }).then((resp) => {
+                cy.get('.carousel-control-next-icon').click()
+                createGallery.img.eq(1).should('have.attr', 'src', 'https://www.laketemperature.org/wp-content/uploads/2019/11/Crater-Lake.jpg')
+        
 
-        cy.wait(1000)
-        cy.get('.carousel-control-next-icon').click()
-        createGallery.img.eq(1).should('have.attr', 'src', 'https://www.laketemperature.org/wp-content/uploads/2019/11/Crater-Lake.jpg')
+                cy.get('.carousel-control-prev-icon').click()
+                createGallery.img.eq(0).should('have.attr', 'src', 'https://www.cisl.cam.ac.uk/news/news-images/business-for-nature.jpg')
+              })
+        })
 
-        cy.wait(1000)
-        cy.get('.carousel-control-prev-icon').click()
-        createGallery.img.eq(0).should('have.attr', 'src', 'https://www.cisl.cam.ac.uk/news/news-images/business-for-nature.jpg')
     })
 
     it('delete gallery', () => {
